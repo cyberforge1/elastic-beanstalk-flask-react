@@ -1,0 +1,73 @@
+{
+    "main": {
+        "url": "http://localhost:5001/api/",
+        "method": "GET",
+        "status_code": 200,
+        "response": {
+            "message": "Welcome to the Todo Management API!"
+        }
+    },
+    "helloworld": {
+        "url": "http://localhost:5001/api/helloworld/",
+        "method": "GET",
+        "status_code": 200,
+        "response": {
+            "message": "Hello, World!"
+        }
+    },
+    "todos_list": {
+        "url": "http://localhost:5001/api/todos/",
+        "method": "GET",
+        "status_code": 200,
+        "response": [
+            {
+                "id": 19,
+                "title": "very good"
+            },
+            {
+                "id": 20,
+                "title": "testing 2"
+            },
+            {
+                "id": 21,
+                "title": "wowweeee"
+            }
+        ]
+    },
+    "create_todo": {
+        "url": "http://localhost:5001/api/todos/",
+        "method": "POST",
+        "status_code": 201,
+        "response": {
+            "message": "Todo created",
+            "todo": {
+                "id": 22,
+                "title": "Sample Todo"
+            }
+        }
+    },
+    "single_todo": {
+        "url": "http://localhost:5001/api/todos/3/",
+        "method": "GET",
+        "status_code": 404,
+        "response": {
+            "error": "Todo not found"
+        }
+    },
+    "update_todo": {
+        "url": "http://localhost:5001/api/todos/3/",
+        "method": "PUT",
+        "status_code": 404,
+        "response": {
+            "error": "Todo not found"
+        }
+    },
+    "delete_todo": {
+        "url": "http://localhost:5001/api/todos/3/",
+        "method": "DELETE",
+        "status_code": 404,
+        "response": {
+            "error": "Todo not found"
+        }
+    }
+}
