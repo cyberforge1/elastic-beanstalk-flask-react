@@ -11,12 +11,33 @@ chmod +x prepare_production.sh
 
 gunicorn --chdir backend --bind 0.0.0.0:5001 wsgi:application
 
-
-
 ## Running React App
 
 serve -s production_build/frontend_build -l 3000
 
+
+
+### Running Nginx
+
+nginx -t
+
+tail -f /opt/homebrew/var/log/nginx/error.log
+
+
+brew services start nginx
+
+ps aux | grep nginx
+
+
+# Testing Nginx
+
+curl -I http://localhost:8080/
+
+curl http://localhost:8080/
+
+curl -I http://localhost:8080/api/todos/
+
+curl http://localhost:8080/api/todos/
 
 
 
