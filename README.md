@@ -1,8 +1,8 @@
-# Production Build Flask React
+# Elastic Beanstalk Flask React
 
 ``` markdown
 
-production-build-flask-react/
+elastic-beanstalk-flask-react/
 ├── backend/
 │   ├── app/
 │   │   ├── __init__.py
