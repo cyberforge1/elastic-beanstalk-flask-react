@@ -5,30 +5,33 @@
 elastic-beanstalk-flask-react/
 ├── backend/
 │   ├── app/
-│   │   ├── __init__.py
-│   │   ├── config.py
-│   │   ├── models.py
+│   │   └── __init__.py
+│   │   └── config.py
 │   │   └── routes/
-│   │       ├── main.py
-│   │       ├── helloworld.py
-│   │       └── todos.py
+│   ├── run.py
 │   ├── wsgi.py
-│   ├── requirements.txt
-│   └── Procfile
+│   ├── Procfile
+│   └── requirements.txt
 ├── frontend/
-│   ├── package.json
 │   ├── src/
-│   ├── public/
-│   └── dist/
+│   │   └── api/
+│   │   └── App.tsx
+│   ├── vite.config.ts
+│   ├── vitest.config.ts
+│   └── package.json
+├── nginx-flask-react.conf
 ├── prepare_production.sh
-├── .platform/
-│   └── nginx/
-│       └── conf.d/
-│           └── myapp.conf
-└── production_build/
-    ├── frontend_build/
-    │   ├── index.html
-    │   └── assets/
-    └── flask_app.zip
+├── production_build/
+│   └── production_build.zip
+├── terraform/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── terraform.tfvars
+│   ├── iam.tf
+│   ├── s3.tf
+│   ├── elastic_beanstalk.tf
+│   └── outputs.tf
+└── .gitignore
+
 
 ````

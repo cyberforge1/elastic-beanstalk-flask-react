@@ -51,3 +51,11 @@ curl http://localhost:5001/api/todos/
 
 
 # Terraform
+
+terraform -chdir=terraform validate
+
+terraform -chdir=terraform plan
+
+terraform -chdir=terraform apply
+
+terraform -chdir=terraform destroy
