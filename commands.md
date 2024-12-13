@@ -21,12 +21,12 @@ serve -s production_build/frontend_build -l 3000
 
 nginx -t
 
-tail -f /opt/homebrew/var/log/nginx/error.log
+ps aux | grep nginx
 
+tail -f /opt/homebrew/var/log/nginx/error.log
 
 brew services start nginx
 
-ps aux | grep nginx
 
 
 # Testing Nginx
