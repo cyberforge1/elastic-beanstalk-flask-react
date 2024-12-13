@@ -43,7 +43,6 @@ resource "aws_iam_user_policy_attachment" "s3_policy_attachment" {
 resource "aws_iam_access_key" "s3_user_access_key" {
   user = aws_iam_user.s3_user.name
 
-  # Force rotation on every apply to enhance security
   lifecycle {
     prevent_destroy = false
   }
