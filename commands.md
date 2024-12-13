@@ -59,3 +59,11 @@ terraform -chdir=terraform plan
 terraform -chdir=terraform apply
 
 terraform -chdir=terraform destroy
+
+# Venv
+
+cd backend
+
+source venv/bin/activate
+
+cd ..

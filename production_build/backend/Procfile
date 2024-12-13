@@ -1,3 +1,0 @@
-# backend/Procfile
-
-web: gunicorn --chdir backend --bind 0.0.0.0:5001 wsgi:application
