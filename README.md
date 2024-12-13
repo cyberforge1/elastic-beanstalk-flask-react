@@ -5,33 +5,49 @@
 elastic-beanstalk-flask-react/
 ├── backend/
 │   ├── app/
-│   │   └── __init__.py
-│   │   └── config.py
-│   │   └── routes/
-│   ├── run.py
+│   │   ├── static/                  
+│   │   │   ├── index.html
+│   │   │   ├── asset-manifest.json
+│   │   │   ├── ... other React build files ...
+│   │   ├── __init__.py
+│   │   ├── routes/
+│   │   │   ├── helloworld.py
+│   │   │   ├── main.py
+│   │   │   └── todos.py
+│   │   └── models.py
+│   ├── static/                      
+│   │   ├── index.html
+│   │   ├── asset-manifest.json
+│   │   ├── ... other React build files ...
 │   ├── wsgi.py
-│   ├── Procfile
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── Procfile
 ├── frontend/
+│   ├── dist/                        
+│   │   ├── index.html
+│   │   ├── asset-manifest.json
+│   │   ├── ... other React build files ...
 │   ├── src/
-│   │   └── api/
-│   │   └── App.tsx
-│   ├── vite.config.ts
-│   ├── vitest.config.ts
-│   └── package.json
-├── nginx-flask-react.conf
-├── prepare_production.sh
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.ts
 ├── production_build/
-│   └── production_build.zip
-├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── terraform.tfvars
-│   ├── iam.tf
-│   ├── s3.tf
-│   ├── elastic_beanstalk.tf
-│   └── outputs.tf
-└── .gitignore
-
+│   ├── backend/
+│   │   ├── app/
+│   │   │   ├── static/
+│   │   │   │   ├── index.html
+│   │   │   │   ├── asset-manifest.json
+│   │   │   │   ├── ... other React build files ...
+│   │   │   ├── __init__.py
+│   │   │   ├── routes/
+│   │   │   │   ├── helloworld.py
+│   │   │   │   ├── main.py
+│   │   │   │   └── todos.py
+│   │   │   └── models.py
+│   │   ├── wsgi.py
+│   │   ├── requirements.txt
+│   │   └── Procfile
+│   ├── production_build.zip
+└── prepare_production.sh
 
 ````

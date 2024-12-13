@@ -20,34 +20,34 @@ rm -rf "$OUTPUT_DIR"
 
 # 4. Create the output directory structure
 echo "Creating production build directory..."
-mkdir -p "$OUTPUT_DIR/frontend_build"
+mkdir -p "$OUTPUT_DIR/backend/app/static"  # Ensure static directory exists
 mkdir -p "$OUTPUT_DIR/backend"
-mkdir -p "$OUTPUT_DIR/nginx"
+# mkdir -p "$OUTPUT_DIR/nginx"  # This can be omitted since Nginx is not used
 
-# 5. Copy the React build output into the production_build directory
-echo "Copying React build to production_build/frontend_build..."
-cp -r frontend/dist/* "$OUTPUT_DIR/frontend_build"
+# 5. Copy the React build output into the Flask app's static directory
+echo "Copying React build to production_build/backend/app/static..."
+cp -r frontend/dist/* "$OUTPUT_DIR/backend/app/static"
 
-# 6. Copy the Flask application and related files from backend/
+# 6. **New Step**: Copy the React build output directly to the local `backend/static` directory
+echo "Copying React build to local backend/static directory..."
+# Ensure the local backend/static directory exists
+mkdir -p backend/static
+cp -r frontend/dist/* backend/static/
+
+# 7. Copy the Flask application and related files from backend/
 echo "Copying Flask backend..."
 cp -r backend/app "$OUTPUT_DIR/backend"
 cp backend/wsgi.py "$OUTPUT_DIR/backend"
 cp backend/requirements.txt "$OUTPUT_DIR/backend"
 cp backend/Procfile "$OUTPUT_DIR/backend"
 
-# 7. Copy Nginx configuration files
-echo "Copying Nginx configuration..."
-# Ensure nginx-flask-react.conf is in your project root directory
-cp nginx-flask-react.conf "$OUTPUT_DIR/nginx"
-# If you have a custom nginx.conf in your project repository, copy it as well
-# Otherwise, ensure you have a reference nginx.conf available locally
-# cp path/to/your/nginx.conf "$OUTPUT_DIR/nginx"
+# 8. (Omitted) Copy Nginx configuration files since Nginx is not used
 
-# 8. Create a zip archive inside the production_build directory
+# 9. Create a zip archive inside the production_build directory
 echo "Zipping the production_build directory inside production_build..."
 cd "$OUTPUT_DIR"
 # Exclude the zip file itself to prevent recursion
 zip -r production_build.zip . -x production_build.zip
 
-echo "Production assets have been prepared in 'production_build/' directory."
+echo "Production assets have been prepared in the 'production_build/' directory."
 echo "The final zip file is located at 'production_build/production_build.zip'."

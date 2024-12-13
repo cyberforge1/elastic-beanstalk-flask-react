@@ -1,6 +1,6 @@
 # backend/app/__init__.py
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -13,7 +13,7 @@ migrate = Migrate()
 
 def create_app(config_class=None):
     """Application factory for creating Flask app instances."""
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static', static_url_path='/static')
 
     # Determine the configuration to use based on FLASK_ENV
     env = os.getenv('FLASK_ENV', 'development').lower()
@@ -58,5 +58,18 @@ def create_app(config_class=None):
     api.add_namespace(main_bp, path='/api')  # Main route
     api.add_namespace(helloworld_bp, path='/api/helloworld')  # Hello World route
     api.add_namespace(todos_bp, path='/api/todos')  # Todos routes
+
+    # Serve React App
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve_react_app(path):
+        if path.startswith('api/') or path.startswith('api'):
+            # Let Flask-RESTx handle API routes
+            from werkzeug.exceptions import NotFound
+            raise NotFound()
+        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+            return send_from_directory(app.static_folder, path)
+        else:
+            return send_from_directory(app.static_folder, 'index.html')
 
     return app
