@@ -1,0 +1,21 @@
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.backup
+
+# Ignore Terraform variable files that may contain sensitive info
+terraform.tfvars
+terraform.tfvars.json
+
+# Ignore Terraform lock file
+.terraform.lock.hcl
+
+# Ignore the .terraform directory where plugins are stored
+.terraform/
+
+# If you have large build artifacts, ensure they are ignored as well
+production_build/
+production_build.zip
+
+# Ignore Python bytecode and other defaults if needed
+__pycache__/
+*.pyc
