@@ -21,16 +21,24 @@
         "status_code": 200,
         "response": [
             {
-                "id": 19,
-                "title": "very good"
+                "id": 39,
+                "title": "something"
             },
             {
-                "id": 20,
-                "title": "testing 2"
+                "id": 46,
+                "title": "here"
             },
             {
-                "id": 21,
-                "title": "wowweeee"
+                "id": 47,
+                "title": "now this"
+            },
+            {
+                "id": 57,
+                "title": "woweee"
+            },
+            {
+                "id": 58,
+                "title": "New Todo via cURL"
             }
         ]
     },
@@ -41,7 +49,7 @@
         "response": {
             "message": "Todo created",
             "todo": {
-                "id": 22,
+                "id": 59,
                 "title": "Sample Todo"
             }
         }

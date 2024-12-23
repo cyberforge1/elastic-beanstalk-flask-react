@@ -3,8 +3,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Todo, TodoCreation, TodoUpdate, ApiResponse } from '../types/types';
 
-// Update the API base URL to be relative
-const API_BASE_URL = '/api'; // Relative path since frontend is served by Flask
+const API_BASE_URL = 'http://localhost:5001/api'; // Flask API base URL
 
 // Get the main welcome message
 export const getMainMessage = async (): Promise<string> => {

@@ -1,42 +1,36 @@
 # backend/app/__init__.py
 
-from flask import Flask, send_from_directory
+from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restx import Api
-from .config import Config, DevelopmentConfig, TestingConfig, ProductionConfig
-import os
+from .config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app(config_class=None):
+def create_app(config_class=Config):
     """Application factory for creating Flask app instances."""
-    app = Flask(__name__, static_folder='static', static_url_path='/static')
-
-    # Determine the configuration to use based on FLASK_ENV
-    env = os.getenv('FLASK_ENV', 'development').lower()
-    if env == 'production':
-        config_class = ProductionConfig
-    elif env == 'testing':
-        config_class = TestingConfig
-    else:
-        config_class = DevelopmentConfig
-
+    app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # Validate configuration if available
+    # Validate configuration
     if hasattr(config_class, "validate"):
         config_class.validate()
 
     print("DEBUG (create_app): SQLALCHEMY_DATABASE_URI in config:", app.config.get("SQLALCHEMY_DATABASE_URI"))
 
     # Enable Cross-Origin Resource Sharing (CORS)
-    CORS(app, resources={r"/api/*": {"origins": "*"}})  # Adjust origins as needed for security
+    CORS(app)
 
-    # Initialize database and migrations
+    # Initialize database
     db.init_app(app)
+
+    # Import models here to ensure they're registered with SQLAlchemy before initializing migrations
+    from .models import Todo  # Import all models here
+
+    # Initialize migrations after models are imported
     migrate.init_app(app, db)
 
     # Initialize Flask-RESTx API
@@ -58,18 +52,5 @@ def create_app(config_class=None):
     api.add_namespace(main_bp, path='/api')  # Main route
     api.add_namespace(helloworld_bp, path='/api/helloworld')  # Hello World route
     api.add_namespace(todos_bp, path='/api/todos')  # Todos routes
-
-    # Serve React App
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<path:path>')
-    def serve_react_app(path):
-        if path.startswith('api/') or path.startswith('api'):
-            # Let Flask-RESTx handle API routes
-            from werkzeug.exceptions import NotFound
-            raise NotFound()
-        if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-            return send_from_directory(app.static_folder, path)
-        else:
-            return send_from_directory(app.static_folder, 'index.html')
 
     return app

@@ -1,5 +1,11 @@
 # Commands
 
+
+# Venv
+
+source backend/venv/bin/activate
+
+
 ## Production Build Scripts
 
 chmod +x prepare_production.sh
@@ -11,10 +17,10 @@ chmod +x prepare_production.sh
 
 gunicorn --chdir backend --bind 0.0.0.0:5001 wsgi:application
 
+
 ## Running React App
 
-serve -s production_build/frontend_build -l 3000
-
+serve -s backend/static -l 3000
 
 
 ### Running Nginx
@@ -26,7 +32,6 @@ ps aux | grep nginx
 tail -f /opt/homebrew/var/log/nginx/error.log
 
 brew services start nginx
-
 
 
 # Testing Nginx
@@ -49,21 +54,18 @@ curl http://localhost:5001/api/helloworld/
 
 curl http://localhost:5001/api/todos/
 
+## Starting Nginx
 
-# Terraform
+brew services start nginx
 
-terraform -chdir=terraform validate
+## Port Processes
 
-terraform -chdir=terraform plan
+lsof -i :3000
+lsof -i :5001
 
-terraform -chdir=terraform apply
+kill -9 <PID>
 
-terraform -chdir=terraform destroy
 
-# Venv
+## Nginx Config file
 
-cd backend
-
-source venv/bin/activate
-
-cd ..
+code /opt/homebrew/etc/nginx/nginx.conf

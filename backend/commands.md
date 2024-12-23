@@ -11,10 +11,9 @@ pip install -r requirements.txt
 pip freeze > requirements.txt
 
 
-
 # Run App
 
-python run.py
+python3 run.py
 
 # Documentation
 
@@ -32,17 +31,6 @@ python scripts/db_data_collection_and_export.py
 python scripts/manual_endpoint_test.py
 
 
-
-# Stop any running Nginx instance
-sudo nginx -s stop
-
-# Start Nginx with the new configuration
-sudo nginx
-
-
-
-
-
 # Testing
 
 pytest
@@ -56,3 +44,11 @@ pytest --cov=app tests/
 pytest --cov=app --cov-report=html tests/
 
 
+# Migrations
+
+
+flask db upgrade
+
+flask db history
+
+flask db stamp head
