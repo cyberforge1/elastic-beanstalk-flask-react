@@ -1,5 +1,5 @@
+# deployment/prepare_production.sh
 #!/usr/bin/env bash
-# prepare_production.sh
 
 # Exit immediately if a command exits with a non-zero status
 set -e
@@ -9,7 +9,7 @@ PROJECT_ROOT="$(pwd)"
 OUTPUT_DIR="$PROJECT_ROOT/production_build"
 BACKEND_DIR="$PROJECT_ROOT/backend"
 STATIC_DIR="$BACKEND_DIR/static"
-NGINX_CONFIG_SRC="$PROJECT_ROOT/nginx-flask-react.conf"
+NGINX_CONFIG_SRC="$PROJECT_ROOT/deployment/nginx-flask-react.conf"  # Updated path
 NGINX_CONFIG_DEST="$OUTPUT_DIR/nginx-flask-react.conf"
 ZIP_FILE="$OUTPUT_DIR/nginx-flask-react.zip"
 
@@ -42,7 +42,7 @@ cp "$BACKEND_DIR/wsgi.py" "$OUTPUT_DIR/backend/"  # Ensure wsgi.py is included
 # 6. Copy NGINX server configuration
 echo "Copying NGINX configuration..."
 if [ -f "$NGINX_CONFIG_SRC" ]; then
-    cp "$NGINX_CONFIG_SRC" "$OUTPUT_DIR/nginx-flask-react.conf"
+    cp "$NGINX_CONFIG_SRC" "$NGINX_CONFIG_DEST"
 else
     echo "Error: NGINX configuration file not found at '$NGINX_CONFIG_SRC'."
     exit 1

@@ -8,9 +8,9 @@ source backend/venv/bin/activate
 
 ## Production Build Scripts
 
-chmod +x prepare_production.sh
+chmod +x deployment/prepare_production.sh
 
-./prepare_production.sh
+./deployment/prepare_production.sh
 
 
 ## Running Gunicorn (Flask API)
