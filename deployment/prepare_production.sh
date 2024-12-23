@@ -9,7 +9,7 @@ PROJECT_ROOT="$(pwd)"
 OUTPUT_DIR="$PROJECT_ROOT/production_build"
 BACKEND_DIR="$PROJECT_ROOT/backend"
 STATIC_DIR="$BACKEND_DIR/static"
-NGINX_CONFIG_SRC="$PROJECT_ROOT/deployment/nginx-flask-react.conf"  # Updated path
+NGINX_CONFIG_SRC="$PROJECT_ROOT/deployment/nginx-flask-react.conf"
 NGINX_CONFIG_DEST="$OUTPUT_DIR/nginx-flask-react.conf"
 ZIP_FILE="$OUTPUT_DIR/nginx-flask-react.zip"
 
@@ -35,7 +35,7 @@ mkdir -p "$OUTPUT_DIR/backend"
 cp -r "$BACKEND_DIR/app" "$OUTPUT_DIR/backend/"
 cp "$BACKEND_DIR/run.py" "$OUTPUT_DIR/backend/"
 cp "$BACKEND_DIR/requirements.txt" "$OUTPUT_DIR/backend/"
-cp "$BACKEND_DIR/.env" "$OUTPUT_DIR/backend/"
+cp "$BACKEND_DIR/.env" "$OUTPUT_DIR/backend/"  # if you want .env included
 cp -r "$BACKEND_DIR/migrations" "$OUTPUT_DIR/backend/"
 cp "$BACKEND_DIR/wsgi.py" "$OUTPUT_DIR/backend/"  # Ensure wsgi.py is included
 
@@ -68,7 +68,7 @@ echo "Installing dependencies..."
 pip install --upgrade pip --quiet
 pip install -r requirements.txt --quiet
 
-# 7.4 Run database migrations
+# 7.4 Run database migrations (optional, typically you let EB handle this, but shown here for reference)
 echo "Running database migrations..."
 flask db upgrade
 
@@ -76,22 +76,30 @@ flask db upgrade
 deactivate
 cd "$PROJECT_ROOT"
 
-# 8. Package the production build into a zip file
+# 8. Copy EB config folders (.ebextensions, .platform) into production_build
+# Make sure these folders exist in your project root
+if [ -d ".ebextensions" ]; then
+    echo "Copying .ebextensions folder..."
+    cp -r .ebextensions "$OUTPUT_DIR/"
+fi
+
+if [ -d ".platform" ]; then
+    echo "Copying .platform folder..."
+    cp -r .platform "$OUTPUT_DIR/"
+fi
+
+# 9. Package the production build into a zip file
 echo "Creating zip archive for production deployment..."
 mkdir -p "$OUTPUT_DIR"  # Ensure OUTPUT_DIR exists
 cd "$OUTPUT_DIR"
 zip -r "$ZIP_FILE" ./* > /dev/null
 cd "$PROJECT_ROOT"
 
-# 9. Final confirmation
+# 10. Final confirmation
 echo "Production build complete!"
 echo "React build location: '$STATIC_DIR'"
 echo "Build directory: '$OUTPUT_DIR'"
 echo "Zip archive: '$ZIP_FILE'"
 
-# 10. Serve the static build for testing (optional)
-# Removed the serve command since NGINX will handle serving the frontend
-# If you still want to use it for local testing, uncomment the following lines:
-
-# echo "Serving the React build for testing..."
+# 11. (Optional) Serve the static build for local testing
 # serve -s "$STATIC_DIR" -l 3000
