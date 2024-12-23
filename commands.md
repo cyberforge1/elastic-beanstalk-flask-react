@@ -54,9 +54,6 @@ curl http://localhost:5001/api/helloworld/
 
 curl http://localhost:5001/api/todos/
 
-## Starting Nginx
-
-brew services start nginx
 
 ## Port Processes
 
@@ -69,3 +66,11 @@ kill -9 <PID>
 ## Nginx Config file
 
 code /opt/homebrew/etc/nginx/nginx.conf
+
+
+## Terraform
+
+terraform -chdir=terraform init -upgrade
+terraform -chdir=terraform plan
+terraform -chdir=terraform apply
+terraform -chdir=terraform destroy

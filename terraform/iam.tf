@@ -1,49 +1,63 @@
 # terraform/iam.tf
 
-resource "aws_iam_user" "s3_user" {
-  name = var.iam_user_name
+########################################
+# IAM Role for Elastic Beanstalk Service
+########################################
 
-  tags = {
-    Name = "S3AccessUser"
+# Data for the EB service trust relationship
+data "aws_iam_policy_document" "eb_service_trust" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["elasticbeanstalk.amazonaws.com"]
+    }
   }
 }
 
-resource "aws_iam_policy" "s3_policy" {
-  name        = "S3AccessPolicy"
-  description = "Policy to allow access to the production build S3 bucket."
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "s3:ListBucket"
-        ]
-        Effect   = "Allow"
-        Resource = aws_s3_bucket.production_build_bucket.arn
-      },
-      {
-        Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:DeleteObject"
-        ]
-        Effect   = "Allow"
-        Resource = "${aws_s3_bucket.production_build_bucket.arn}/*"
-      }
-    ]
-  })
+# The EB service role
+resource "aws_iam_role" "eb_service_role" {
+  name               = "eb-service-role"
+  assume_role_policy = data.aws_iam_policy_document.eb_service_trust.json
 }
 
-resource "aws_iam_user_policy_attachment" "s3_policy_attachment" {
-  user       = aws_iam_user.s3_user.name
-  policy_arn = aws_iam_policy.s3_policy.arn
+# Attach an updated managed policy for EB
+resource "aws_iam_role_policy_attachment" "eb_service_role_managed_policy" {
+  role       = aws_iam_role.eb_service_role.name
+  # Use a valid ARN in your account:
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkService"
+  # or your custom ARN, e.g. "arn:aws:iam::123456789012:policy/MyCustomEbServiceRolePolicy"
 }
 
-resource "aws_iam_access_key" "s3_user_access_key" {
-  user = aws_iam_user.s3_user.name
+########################################
+# IAM Role for EC2 Instances in EB
+########################################
 
-  lifecycle {
-    prevent_destroy = false
+# Data for the EC2 trust relationship
+data "aws_iam_policy_document" "eb_ec2_trust" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
   }
+}
+
+# The EC2 instance role
+resource "aws_iam_role" "eb_ec2_instance_role" {
+  name               = "eb-ec2-instance-role"
+  assume_role_policy = data.aws_iam_policy_document.eb_ec2_trust.json
+}
+
+# Attach AWS managed policy for the EC2 role
+resource "aws_iam_role_policy_attachment" "eb_ec2_instance_role_managed_policy" {
+  role       = aws_iam_role.eb_ec2_instance_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+}
+
+# Instance profile for EB to associate with the EC2 instance role
+resource "aws_iam_instance_profile" "eb_instance_profile" {
+  name = "eb-ec2-instance-profile"
+  role = aws_iam_role.eb_ec2_instance_role.name
 }

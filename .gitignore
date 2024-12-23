@@ -1,5 +1,30 @@
-production_build
-# Elastic Beanstalk Files
+# .gitignore
+
+# Elastic Beanstalk configuration
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Terraform directories and state files
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfplan
+terraform/*.crash
+terraform/*.tfvars
+*.tfvars
+terraform/.terraform.lock.hcl
+
+# Terraform override files
+terraform/override.tf
+terraform/override.tf.json
+terraform/*_override.tf
+terraform/*_override.tf.json
+
+# Environment variable files
+.env
+.env.*
+
+# Ensure variables.tf is not ignored
+# Remove or comment out the following line if present
+# terraform/variables.tf

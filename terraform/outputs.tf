@@ -1,22 +1,21 @@
 # terraform/outputs.tf
 
+output "application_name" {
+  description = "Elastic Beanstalk Application Name"
+  value       = aws_elastic_beanstalk_application.main.name
+}
+
+output "environment_name" {
+  description = "Elastic Beanstalk Environment Name"
+  value       = aws_elastic_beanstalk_environment.main.name
+}
+
+output "environment_url" {
+  description = "URL endpoint of the EB environment"
+  value       = aws_elastic_beanstalk_environment.main.endpoint_url
+}
+
 output "s3_bucket_name" {
-  description = "Name of the S3 bucket for production builds."
-  value       = aws_s3_bucket.production_build_bucket.id
-}
-
-output "iam_user_name" {
-  description = "Name of the IAM user with access to the S3 bucket."
-  value       = aws_iam_user.s3_user.name
-}
-
-output "iam_access_key_id" {
-  description = "Access Key ID for the IAM user."
-  value       = aws_iam_access_key.s3_user_access_key.id
-}
-
-output "iam_secret_access_key" {
-  description = "Secret Access Key for the IAM user."
-  value       = aws_iam_access_key.s3_user_access_key.secret
-  sensitive   = true
+  description = "Name of the S3 bucket storing the application bundle"
+  value       = aws_s3_bucket.eb_bucket.bucket
 }
