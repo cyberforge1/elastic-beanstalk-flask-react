@@ -73,4 +73,5 @@ code /opt/homebrew/etc/nginx/nginx.conf
 terraform -chdir=terraform init -upgrade
 terraform -chdir=terraform plan
 terraform -chdir=terraform apply
+
 terraform -chdir=terraform destroy

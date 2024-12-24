@@ -5,36 +5,43 @@ provider "aws" {
 }
 
 #############################
-# 1. S3 Bucket
+# S3 Bucket
 #############################
 resource "aws_s3_bucket" "eb_bucket" {
   bucket = var.s3_bucket_name
 
-  # Optionally for security:
+  # Optionally for enhanced security:
   # block_public_acls   = true
   # block_public_policy = true
 
   tags = {
-    Name = var.s3_bucket_name
+    Name    = var.s3_bucket_name
+    Project = var.project_name
   }
 }
 
 #############################
-# 2. Upload ZIP to S3 (aws_s3_object)
+# Upload ZIP to S3 (aws_s3_object)
 #############################
 resource "aws_s3_object" "eb_app_zip" {
   bucket = aws_s3_bucket.eb_bucket.bucket
   key    = "app-bundles/${var.application_name}.zip"
   source = var.artifact_file
   acl    = "private"
+
+  depends_on = [aws_s3_bucket.eb_bucket]
 }
 
 ##############################################
-# 3. Elastic Beanstalk Application + Version
+# Elastic Beanstalk Application + Version
 ##############################################
 resource "aws_elastic_beanstalk_application" "main" {
   name        = var.application_name
   description = "Flask + React + Nginx Elastic Beanstalk application"
+
+  tags = {
+    Project = var.project_name
+  }
 }
 
 resource "aws_elastic_beanstalk_application_version" "main" {
@@ -46,10 +53,12 @@ resource "aws_elastic_beanstalk_application_version" "main" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [aws_elastic_beanstalk_application.main, aws_s3_object.eb_app_zip]
 }
 
 ########################################
-# 4. Elastic Beanstalk Environment
+# Elastic Beanstalk Environment
 ########################################
 resource "aws_elastic_beanstalk_environment" "main" {
   name                = var.environment_name
@@ -92,5 +101,11 @@ resource "aws_elastic_beanstalk_environment" "main" {
   tags = {
     Environment = var.environment_name
     Application = var.application_name
+    Project     = var.project_name
   }
+
+  depends_on = [
+    aws_iam_role.eb_service_role,
+    aws_iam_instance_profile.eb_instance_profile
+  ]
 }
