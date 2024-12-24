@@ -1,4 +1,4 @@
-# Nginx Flask React
+# Elastic Beanstalk Flask React
 
 
 
