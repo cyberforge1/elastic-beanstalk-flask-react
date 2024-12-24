@@ -25,10 +25,13 @@ resource "aws_iam_role" "eb_service_role" {
   }
 }
 
-# Attach a valid managed policy for EB
+# Attach the AdministratorAccess-AWSElasticBeanstalk policy to the EB service role
 resource "aws_iam_role_policy_attachment" "eb_service_role_managed_policy" {
   role       = aws_iam_role.eb_service_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkFullAccess"  # Ensure this is correct
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess-AWSElasticBeanstalk"
+
+  # Explicitly declare dependency to ensure the role is created before attaching the policy
+  depends_on = [aws_iam_role.eb_service_role]
 }
 
 ########################################

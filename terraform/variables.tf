@@ -45,5 +45,5 @@ variable "instance_type" {
 variable "solution_stack_name" {
   type        = string
   description = "Platform stack for the EB environment."
-  default     = "Python 3.9 running on 64bit Amazon Linux 2023"
+  default     = "64bit Amazon Linux 2023 v4.3.2 running Python 3.9"
 }

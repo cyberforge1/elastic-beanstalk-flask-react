@@ -75,3 +75,5 @@ terraform -chdir=terraform plan
 terraform -chdir=terraform apply
 
 terraform -chdir=terraform destroy
+
+
