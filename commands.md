@@ -77,3 +77,8 @@ terraform -chdir=terraform apply
 terraform -chdir=terraform destroy
 
 
+## Logs
+
+aws elasticbeanstalk request-environment-info --environment-name my-custom-env --info-type tail
+
+aws elasticbeanstalk retrieve-environment-info --environment-name my-custom-env --info-type tail
